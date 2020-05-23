@@ -1,0 +1,23 @@
+# Author: ltan
+# Date: 2020-05-23
+
+1. 检索多个列
+DISTINCT关键字指示MySQL只返回不同的值。
+SELECT DISTINCT student_id告诉MySQL只返回不同（唯一）的student_id行。如果使用DISTINCT关键字，它必须直接放在列名的前面。
+
+不能部分使用DISTINCT,DISTINCT关键字应用于所有列而不仅是前置它的列。如果给出SELECT DISTINCT student_id, grade_price，除非指定的两个列都不同，否则所有行都将被检索出来。
+
+2. 限制结果
+
+# 返回第一行或前几行，可使用LIMIT子句。
+select student_id
+from student
+limit 5;
+
+# 第一个数为开始位置，第二个数为要检索的行数。
+select student_id
+from student
+limit 5,5;   # 返回从行5开始的5行
+
+行0 检索出来的第一行为行0而不是行1。因此，LIMIT 1, 1将检索出第二行而不是第一行。
+MySQL 5支持LIMIT的另一种替代语法。LIMIT 4 OFFSET 3意为从行3开始取4行，就像LIMIT 3, 4一样。

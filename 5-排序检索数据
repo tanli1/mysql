@@ -1,0 +1,41 @@
+# Author: ltan
+# Date: 2020-05-23
+
+5.1 排序数据
+为了明确地排序用SELECT语句检索出的数据，可使用ORDER BY子句。ORDER BY子句取一个或多个列的名字，据此对输出进行排序。
+select student_name
+from student
+order by student_name
+
+通过非选择列进行排序 通常，ORDER BY子句中使用的列将是为显示所选择的列。但是，实际上并不一定要这样，用非检索的列排序数据是完全合法的。
+
+
+5.2 按多个列排序
+检索3个列，并按其中两个列对结果进行排序——首先按价格，然后再按名称排序。
+select prod_id, prod_price, prod_name
+from products
+order by prod_price, prod_name;
+
+
+5.3 指定排序方向
+数据排序不限于升序排序（从A到Z）。这只是默认的排序顺序，还可以使用ORDER BY子句以降序（从Z到A）顺序排序。为了进行降序排序，必须指定DESC关键字。
+
+DESC是降序
+select prod_id, prod_price, prod_name
+from products
+order by prod_price DESC;
+
+select prod_id, prod_price, prod_name
+from products
+order by prod_price DESC, prod_name;
+
+DESC关键字只应用到直接位于其前面的列名。在上例中，只对prod_price列指定DESC，对prod_name列不指定。因此，prod_price列以降序排序，而prod_name列（在每个价格内）仍然按标准的升序排序。
+在多个列上降序排序 如果想在多个列上进行降序排序，必须对每个列指定DESC关键字。
+
+与DESC相反的关键字是ASC（ASCENDING），在升序排序时可以指定它。但实际上，ASC没有多大用处，因为升序是默认的（如果既不指定ASC也不指定DESC，则假定为ASC）。
+
+使用ORDER BY和LIMIT的组合，能够找出一个列中最高或最低的值。
+select prod_id, prod_price, prod_name
+from products
+order by prod_price DESC
+limit 1;
