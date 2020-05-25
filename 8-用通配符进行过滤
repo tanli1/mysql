@@ -1,0 +1,37 @@
+# Author: ltan
+# Date: 2020-05-25
+
+1. like操作符
+为在搜索子句中使用通配符，必须使用LIKE操作符。LIKE指示MySQL，后跟的搜索模式利用通配符匹配而不是直接相等匹配进行比较。
+
+1.1 百分号（%）通配符
+最常使用的通配符是百分号（%）。在搜索串中，%表示任何字符出现任意次数。
+
+为了找出所有以词jet起头的产品，可使用以下SELECT语句：
+select prod_id, prod_name
+from products
+where prod_name like 'jet%';
+
+根据MySQL的配置方式，搜索可以是区分大小写的。如果区分大小写，'jet%'与JetPack 1000将不匹配。
+
+通配符可在搜索模式中任意位置使用，并且可以使用多个通配符。下面的例子使用两个通配符，它们位于模式的两端：
+select prod_id, prod_name
+from products
+where prod_name like '%anvil%';
+
+通配符也可以出现在搜索模式的中间，虽然这样做不太有用。
+select prod_id, prod_name
+from products
+where prod_name like 's%e';
+
+除了一个或多个字符外，%还能匹配0个字符。%代表搜索模式中给定位置的0个、1个或多个字符。
+
+虽然似乎%通配符可以匹配任何东西，但有一个例外，即NULL。即使是WHERE prod_name LIKE '%'也不能匹配用值NULL作为产品名的行。
+
+
+1.2 下划线（_）通配符
+下划线的用途与%一样，但下划线只匹配单个字符而不是多个字符。_总是匹配一个字符，不能多也不能少。
+select prod_id, prod_name
+from products
+where prod_name like '_ to anvil';
+

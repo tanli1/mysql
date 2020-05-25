@@ -1,0 +1,40 @@
+# Author: ltan
+# Date: 2020-05-25
+
+1. 组合where子句 
+
+1.1 and操作符
+select prod_id, prod_price, prod_name
+from products
+where vend_id = 1003 and prod_price <=10;
+
+1.2 or操作符
+OR操作符与AND操作符不同，它指示MySQL检索匹配任一条件的行。
+select prod_id, prod_price
+from products
+where vend_id = 1002 or vend_id = 1003;
+
+select prod_name, prod_price
+from products
+where vend_id = 1002 or vend_id = 1003 and prod_price >= 10;  //where (vend_id = 1002 or vend_id = 1003) and prod_price >= 10;
+
+1.3 IN操作符用来指定条件范围，范围中的每个条件都可以进行匹配。IN取合法值的由逗号分隔的清单，全都括在圆括号中。
+select prod_id, prod_price
+from products
+where vend_id in (1002, 1003)
+order by prod_name;
+
+a. 在使用长的合法选项清单时，IN操作符的语法更清楚且更直观。
+b. 在使用IN时，计算的次序更容易管理（因为使用的操作符更少）。 
+c. IN操作符一般比OR操作符清单执行更快。
+d. IN的最大优点是可以包含其他SELECT语句，使得能够更动态地建立WHERE子句。
+
+1.4 not操作符
+NOT WHERE子句中用来否定后跟条件的关键字。
+select prod_name, prod_price
+from products
+where vend_id not in (1002, 1003)
+order by prod_name;
+
+MySQL中的NOT MySQL支持使用NOT对IN、BETWEEN和EXISTS子句取反。
+
