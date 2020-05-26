@@ -1,0 +1,85 @@
+# Author: ltan
+# Date: 2020-05-26
+
+select prod_name
+from products
+where prod_name REGEXP '1000' # REGEXP '.000' .匹配任意一个字符
+order by prod_name;
+
+1. 进行or匹配
+select prod_name
+from products
+where prod_name REGEXP '1000|2000'
+order by prod_name;
+
+
+2. 匹配几个字符之一
+如果你只想匹配特定的字符，怎么办？可通过指定一组用[和]括起来的字符来完成
+
+select prod_name
+from products
+where prod_name REGEXP '[123] Ton' # [123]定义一组字符，它的意思是匹配1或2或3
+order by prod_name;
+
+[]是另一种形式的OR语句。事实上，正则表达式[123]Ton为[1|2|3]Ton的缩写，也可以使用后者。
+select prod_name
+from products
+where prod_name REGEXP '1|2|3 Ton'
+order by prod_name;
+
+字符集合也可以被否定，即，它们将匹配除指定字符外的任何东西。为否定一个字符集，在集合的开始处放置一个^即可。因此，尽管[123]匹配字符1、2或3，但[^123]却匹配除这些字符外的任何东西。
+
+
+3. 匹配范围
+集合可用来定义要匹配的一个或多个字符。例如，下面的集合将匹配数字0到9：[0123456789]
+为简化这种类型的集合，可使用-来定义一个范围。下面的式子功能上等同于上述数字列表：[0-9]
+select prod_name
+from products
+where prod_name REGEXP '[1-5] Ton'
+order by prod_name;
+
+
+4. 匹配特殊字符
+为了匹配特殊字符，必须用\\为前导。\\-表示查找-，\\.表示查找.
+这包括.、|、[]
+匹配\ 为了匹配反斜杠（\）字符本身，需要使用\\\。
+
+
+5. 匹配字符类
+[:alnum:] 任意字母和数字（同[a-zA-Z0-9]）
+[:alpha:] 任意字符（同[a-zA-Z]）
+[:blank:] 空格和制表（同[\\t]）
+[:cntrl:] ASCII控制字符（ASCII 0到31和127）
+[:digit:] 任意数字（同[0-9]）
+[:graph:] 与[:print:]相同，但不包括空格
+[:lower:] 任意小写字母（同[a-z]）
+[:print:] 任意可打印字符
+[:punct:] 既不在[:alnum:]又不在[:cntrl:]中的任意字符
+[:space:] 包括空格在内的任意空白字符（同[\\f\\n\\r\\t\\v]）
+[:upper:] 任意大写字母（同[A-Z]）
+[:xdigit:] 任意十六进制数字（同[a-fA-F0-9]）
+
+select prod_name
+from products
+where prod_name REGEXP '[[:digit:]]{4}' # 等于 [0-9][0-9][0-9][0-9]
+order by prod_name;
+
+
+6. 匹配多个实例
+元字符    说明
+*        0个或多个匹配
++        1个或多个匹配（等于{1,}）
+?        0个或1个匹配（等于{0,1}）
+{n}      指定数目的匹配
+{n,}     不少于指定数目的匹配
+{n,m}    匹配数目的范围（m不超过255）
+
+
+7. 定位符
+元字     符说明
+^        文本的开始
+$        文本的结尾
+[[:<:]]  词的开始
+[[:>:]]  词的结尾
+
+^的双重用途 ^有两种用法。在集合中，用它来否定该集合，否则，用来指串的开始处。

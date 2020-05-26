@@ -1,0 +1,21 @@
+# Author: ltan
+# Date: 2020-05-26
+
+1. 拼接字段
+MySQL则使用Concat()函数来实现。Concat()拼接串，即把多个串连接起来形成一个较长的串。
+Concat()需要一个或多个指定的串，各个串之间用逗号分隔。
+
+通过删除数据右侧多余的空格来整理数据，这可以使用MySQL的RTrim()函数来完成。
+select Concat(RTrim(vend_name), '(',RTrim(vend_contry),')')
+from vendors
+order by vend_name;
+
+Trim函数 MySQL除了支持RTrim()它去掉串右边的空格，还支持LTrim()去掉串左边的空格,以及Trim(),去掉串左右两边的空格。
+
+
+2. 执行算数计算
+select prod_id,
+       item_price,
+       quantity*item_price AS expanded_price
+from orderitems
+where order_num = 20005;
