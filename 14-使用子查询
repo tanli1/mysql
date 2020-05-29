@@ -1,0 +1,53 @@
+# Author: ltan
+# Date: 2020-05-29
+
+1. 利用子查询进行过滤
+订单存储在两个表中。对于包含订单号、客户ID、订单日期的每个订单，orders表存储一行。各订单的物品存储在相关的orderitems表中。orders表不存储客户信息。它只存储客户的ID。实际的客户信息存储在customers表中。
+
+(1) 检索包含物品TNT2的所有订单的编号。
+(2) 检索具有前一步骤列出的订单编号的所有客户的ID。
+(3) 检索前一步骤返回的所有客户ID的客户信息。
+
+select order_num
+from orderitems
+where prod_id = 'TNT2';
+
+select cust_id
+from orders
+where order_num IN (20005,20007);
+
+# 上面两个合并成如下：
+select cust_id
+from orders
+where order_num IN (select order_num
+                    from orderitems
+                    where prod_id = 'TNT2');
+
+# 使用三个步骤来查询
+select cust_name,cust_contact
+from customers
+where cust_id IN(select cust_id
+                from orders
+                where order_num IN (select order_num
+                                    from orderitems
+                                    where prod_id = 'TNT2'));
+
+2. 作为计算字段使用子查询
+假如需要显示customers表中每个客户的订单总数。订单与相应的客户ID存储在orders表中。
+
+(1) 从customers表中检索客户列表。
+(2) 对于检索出的每个客户，统计其在orders表中的订单数目。
+
+select count(*) as orders
+from orders
+where cust_id = 10001;
+
+select cust_name ,
+       cust_state,
+       (select count(*)
+        from orders
+        where orders.cust_id = customers.cust_id) as orders
+from customers
+order by cust_name;
+
+

@@ -1,0 +1,36 @@
+# Author: ltan
+# Date: 2020-05-29
+
+
+1. 过滤分组
+select cust_id count(*) as orders
+from orders
+group by cust_id
+having count(*) >= 2;
+
+HAVING和WHERE的差别 这里有另一种理解方法，WHERE在数据分组前进行过滤，HAVING在数据分组后进行过滤。这是一个重要的区别，WHERE排除的行不包括在分组中。这可能会改变计算值，从而影响HAVING子句中基于这些值过滤掉的分组。
+
+select cust_id count(*) as orders
+from orders
+where prod_price >= 10
+group by cust_id
+having count(*) >= 2;
+
+2. 分组和排序
+不要忘记ORDER BY 一般在使用GROUP BY子句时，应该也给出ORDER BY子句。这是保证数据正确排序的唯一方法。千万不要仅依赖GROUP BY排序数据。
+
+检索总计订单价格大于等于50的订单的订单号和总计订单价格
+select order_num, SUM(quantity*item_price) AS ordertotal
+from ordersitems
+group by order_num
+having SUM(quantity*item_price) >= 50;
+
+3. SELECT子句顺序
+子句        说明                 是否必须使用
+SELECT      要返回的列或表达式     是
+FROM        从中检索数据的表       仅在从表选择数据时使用
+WHERE       行级过滤              否
+GROUP BY    分组说明              仅在按组计算聚集时使用
+HAVING      组级过滤              否
+ORDER BY    输出排序顺序          否
+LIMIT       要检索的行数          否
