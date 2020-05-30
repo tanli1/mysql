@@ -1,0 +1,62 @@
+# Author: ltan
+# Date: 2020-05-30
+
+1. 关系表
+外键（foreign key） 外键为某个表中的一列，它包含另一个表的主键值，定义了两个表之间的关系。
+这样做的好处如下：
+供应商信息不重复，从而不浪费时间和空间；
+如果供应商信息变动，可以只更新vendors表中的单个记录，相关表中的数据不用改动；
+由于数据无重复，显然数据是一致的，这使得处理数据更简单。
+
+总之，关系数据可以有效地存储和方便地处理。因此，关系数据库的可伸缩性远比非关系数据库要好。
+
+2. 为什么要使用联结
+分解数据为多个表能更有效地存储，更方便地处理，并且具有更大的可伸缩性。但这些好处是有代价的。
+如果数据存储在多个表中，怎样用单条SELECT语句检索出数据？答案是使用联结。
+
+3. 创建联结
+select vend_name, prod_name,prod_price
+from vendors, products
+where vendors.vend_id = products.vend_id
+order by vend_name, prod_name;
+
+不要忘了WHERE子句 应该保证所有联结都有WHERE子句，否则MySQL将返回比想要的数据多得多的数据。
+
+
+4. 内部联结
+目前为止所用的联结称为等值联结（equijoin），它基于两个表之间的相等测试。这种联结也称为内部联结。
+可以使用下面语法：
+select vend_name, prod_name,prod_price
+from vendors, INNER JOIN products
+ON vendors.vend_id = products.vend_id
+order by vend_name, prod_name;
+
+5. 联结多个表
+select prod_name, vend_name, prod_name,prod_price
+from orderitems, products, vendors
+where products.vend_id = vendors.vend_id
+AND orderitems.prod_id = products.prod_id
+AND order_num = 20005;
+
+
+14章的查询可以使用联结
+select cust_name,cust_contact
+from customers
+where cust_id IN(select cust_id
+                from orders
+                where order_num IN (select order_num
+                                    from orderitems
+                                    where prod_id = 'TNT2'));
+
+select cust_name,cust_contact
+from customers，orders, orderitems
+where customers.cust_id = orders.cust_id
+AND orderitems.order_num = orders.order_num
+AND prod_id = 'TNT2';
+
+
+
+
+
+
+
