@@ -1,6 +1,5 @@
 # Author: ltan
 # Date: 2020-05-26
-#
 
 1. 拼接字段
 MySQL则使用Concat()函数来实现。Concat()拼接串，即把多个串连接起来形成一个较长的串。

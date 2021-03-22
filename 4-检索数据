@@ -1,5 +1,6 @@
 # Author: ltan
 # Date: 2020-05-23
+#
 
 1. 检索多个列
 DISTINCT关键字指示MySQL只返回不同的值。
